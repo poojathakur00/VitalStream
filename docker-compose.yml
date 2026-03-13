@@ -52,5 +52,15 @@ services:
       timeout: 3s
       retries: 5
 
+  generator:
+    build:
+      context: ./generator
+    container_name: vitalstream-generator
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    restart: on-failure
+
 volumes:
   postgres_data:
