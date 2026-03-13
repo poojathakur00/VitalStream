@@ -85,8 +85,42 @@ def delivery_callback(err, msg):
 
 def run_producer() -> None:
     """Main loop: continuously produce vital signs for all patients."""
-    producer = create_producer()
     patients = generate_patient_profiles(NUM_PATIENTS)
+    producer = None
+    max_tries=5
+
+    for attempt in range(1, max_tries+1):
+        try:
+            producer= create_producer()
+            
+            producer.list_topics(timeout=5)
+            logger.info(" Connected to Kafka at attempt %d", attempt)
+            break
+        
+        except KeyboardInterrupt:
+            logger.info("Shutting down during connection retry. ")
+            return 
+        
+        except Exception as e:
+            wait_time= 2** attempt
+            logger.warning(
+                "Kafka not available (attempt %d / %d): %s  Retrying in %ds",
+                attempt,
+                max_tries,
+                e,
+                wait_time,
+            )
+            try:
+                time.sleep(wait_time)
+            except KeyboardInterrupt:
+                logger.info("Shutting down during conection retry.")
+                return
+
+
+    else:
+        logger.error("Could not connect to Kafka after %d attempts. Exiting." , max_tries)
+        return
+    
 
     logger.info(
         "Starting vital signs generation for %d patients every %.1f seconds",
