@@ -5,6 +5,7 @@ import logging
 import random
 import time
 from datetime import datetime, timezone
+from typing import Any
 
 from confluent_kafka import Producer
 
@@ -34,7 +35,7 @@ def create_producer() -> Producer:
     return Producer(config)
 
 
-def generate_reading(patient: dict, vital_type: str) -> dict:
+def generate_reading(patient: dict[str,Any], vital_type: str) -> dict[str,Any]:
     """Generate a single vital sign reading for a patient.
 
     Uses the patient's baseline mean and standard deviation

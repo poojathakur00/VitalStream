@@ -23,7 +23,7 @@ def generate_patient_profiles(num_patients: int) -> list[dict[str, Any]]:
         "Betty", "Daniel", "Dorothy", "Matthew", "Helen",
     ]
 
-    wards = ["ICU", "Cardiology", "General", "Neurology", "Respiratory"]
+    wards = ["ICU", "Maternity", "General", "Neurology", "Respiratory"]
 
     profiles = []
 
