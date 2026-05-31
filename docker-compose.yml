@@ -39,6 +39,7 @@ services:
       - "7077:7077"
     volumes:
       - ./processor:/opt/spark/work-dir/processor
+      - spark_ivy_cache:/home/spark/.ivy2
 
   spark-worker:
     image: apache/spark:3.5.0
@@ -77,3 +78,4 @@ services:
 
 volumes:
   postgres_data:
+  spark_ivy_cache:
